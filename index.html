@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Computer Science 2nd Year Assignments</title>
+
+    <meta charset="UTF-8" />
+    <meta name="author" content="Sulla Montes" />
+    <meta name="description" content="Trinity College Dublin Computer Science 2020 2nd years assignment list" />
+    <meta name="keywords" content="cs2020, computer science, cs, tcd, assignments, list, sulla montes" />
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+    <div id="body_wrap">
+        <div id="countdown"></div>
+        <div id="bar"> </div>
+        <h1>assignments</h1>
+
+        <div id="list">
+        </div>
+    </div>
+    <div id="sidebar"> </div>
+    <div id="footer">report a problem →
+        <a href="http://sullamontes.com">
+            sulla()
+        </a>
+        <br>
+        <a href="http://twitter.com/sullamontes">
+            twitter
+        </a> | 
+        <a href="http://github.com/sullaVM">
+            github
+        </a>
+    </div>
+
+
+    <script>
+
+        $(document).ready(function () {
+            update();
+            countdown();
+        });
+
+        function update() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+
+                if (this.readyState == 4 && this.status == 200) {
+                    var allItems = this.responseText.split('\n');
+                    for (var i = 0; i < allItems.length; i++) {
+                        var entry = document.createElement("div");
+                        entry.className = "entry";
+                        entry.style.opacity = ((allItems.length - i ) / 10) + 0.5;
+                        document.getElementById("list").appendChild(entry);
+                        listContent = allItems[i].split(',');
+
+                        var span = document.createElement("span");
+                        var due = document.createTextNode(listContent[0]);
+                        span.appendChild(due);
+                        span.className = "due";
+                        entry.appendChild(span);
+
+                        span = document.createElement("span");
+                        var mod = document.createTextNode(listContent[1]);
+                        span.appendChild(mod);
+                        span.className = "mod"
+                        entry.appendChild(span);
+
+                        if (listContent[2] != null) {
+                            if (listContent[2].includes("http")) {
+                                var notes = document.createTextNode("Assignment Specifications");
+                                var a = document.createElement("a");
+                                a.href = listContent[2];
+                                a.appendChild(notes);
+                                entry.appendChild(a);
+                            } else {
+                                var notes = document.createTextNode(listContent[2]);
+                                entry.appendChild(notes);
+                            }
+                        }
+                    }
+                }
+            };
+            var todo = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRVvDrJCGpOSpgS6uYDxfIm_Ooq3Ll5P_PhaTjhxENcFcXo2PvythkYj46McVUsp-IMS1tFJgVngde/pub?output=csv";
+            xhttp.open("GET", todo, true);
+            xhttp.send();
+        }
+
+        function countdown() {
+            var countDownDate = new Date("May 15, 2018 23:59:59").getTime();
+            var now = new Date().getTime();
+                var distance = countDownDate - now;
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+                document.getElementById("countdown").innerHTML = days + " DAYS TILL SUMMER";
+                console.log(days);
+
+                var width = 0;
+                var x = setInterval(grow, 10);
+                function grow() {
+                    if (width == days) {
+                        clearInterval(x);
+                    } else {
+                        width++;
+                        document.getElementById("bar").style.width = width + "px";
+                    }
+                }
+        }
+
+    </script>
+
+
+</body>
+
+</html>
